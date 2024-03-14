@@ -24,6 +24,7 @@ namespace com.akihiro.dependencies_importer
         [InitializeOnLoadMethod]
         public static void LoadPackage()
         {
+            Debug.Log("Start load package");
             listRequest = Client.List(true);
             EditorApplication.update += listProgress;
         }
