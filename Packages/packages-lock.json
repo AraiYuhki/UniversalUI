@@ -253,8 +253,7 @@
       "depth": 0,
       "source": "embedded",
       "dependencies": {
-        "com.unity.textmeshpro": "3.0.8",
-        "com.cysharp.unitask": "2.5.3"
+        "com.unity.textmeshpro": "3.0.8"
       }
     },
     "jp.xeon.x_tween": {
