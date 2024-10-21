@@ -275,7 +275,7 @@
       }
     },
     "jp.xeon.x_tween": {
-      "version": "https://github.com/AraiYuhki/XTween.git?path=Packages/XTween/",
+      "version": "git+https://github.com/AraiYuhki/XTween.git?path=Packages/XTween/",
       "depth": 0,
       "source": "git",
       "dependencies": {},
