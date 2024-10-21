@@ -12,7 +12,7 @@ namespace com.akihiro.dependencies_importer
     {
         private static string[] PackageURLs ={
             // GitHub, Azure DevOps, Unity, ローカルのUnity Package Manager用URLを追加
-            "git+https://github.com/arai-yuki/XTween.git?path=Packages/XTween/",
+            "git+https://github.com/AraiYuhki/XTween.git?path=Packages/XTween/",
             "git+https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
         };
 
