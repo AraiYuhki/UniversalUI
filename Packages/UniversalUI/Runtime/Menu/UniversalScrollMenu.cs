@@ -1,27 +1,32 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public abstract class UniversalScrollMenu : UniversalMenuBase
+namespace Xeon.UniversalUI
 {
-    [SerializeField]
-    protected ScrollRect scrollView;
-    [SerializeField, Range(0f, 1f)]
-    private float align = 1f;
-    protected float Align
+    public abstract class UniversalScrollMenu : UniversalMenuBase
     {
-        get => align;
-        set => align = Mathf.Clamp01(value);
-    }
+        [SerializeField]
+        protected ScrollRect scrollView;
+        [SerializeField, Range(0f, 1f)]
+        private float align = 1f;
+        protected float Align
+        {
+            get => align;
+            set => align = Mathf.Clamp01(value);
+        }
 
-    protected virtual void Move(int move)
-    {
-        items[selectedIndex].UnSelect();
-        selectedIndex += move;
-        FixIndex();
-        items[selectedIndex].Select();
-        ReselectCurrentItem();
-        FixScroll();
-    }
+        protected virtual void Move(int move)
+        {
+            if (!EnableInput || LockInput) return;
 
-    protected abstract void FixScroll();
+            selectableItems[SelectedIndex].UnSelect();
+            SelectedIndex += move;
+            FixIndex();
+            selectableItems[SelectedIndex].Select();
+            ReselectCurrentItem();
+            FixScroll();
+        }
+
+        protected abstract void FixScroll();
+    }
 }

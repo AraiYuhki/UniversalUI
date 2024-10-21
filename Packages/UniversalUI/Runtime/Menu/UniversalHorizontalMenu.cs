@@ -1,24 +1,29 @@
-public class UniversalHorizontalMenu : UniversalMenuBase
+namespace Xeon.UniversalUI
 {
-    protected void Move(int move)
+    public class UniversalHorizontalMenu : UniversalMenuBase
     {
-        items[selectedIndex].UnSelect();
-        selectedIndex += move;
-        FixIndex();
-        items[selectedIndex].Select();
-        ReselectCurrentItem();
-    }
+        protected void Move(int move)
+        {
+            if (!EnableInput || LockInput) return;
 
-    public override void Right() => Move(1);
-    public override void Left() => Move(-1);
-    public override void Up()
-    {
-        if (!EnableInput) return;
-        items[selectedIndex].Up();
-    }
-    public override void Down()
-    {
-        if (!EnableInput) return;
-        items[selectedIndex].Down();
+            selectableItems[SelectedIndex].UnSelect();
+            SelectedIndex += move;
+            FixIndex();
+            selectableItems[SelectedIndex].Select();
+            ReselectCurrentItem();
+        }
+
+        public override void Right() => Move(1);
+        public override void Left() => Move(-1);
+        public override void Up()
+        {
+            if (!EnableInput || LockInput) return;
+            selectableItems[SelectedIndex].Up();
+        }
+        public override void Down()
+        {
+            if (!EnableInput || LockInput) return;
+            selectableItems[SelectedIndex].Down();
+        }
     }
 }

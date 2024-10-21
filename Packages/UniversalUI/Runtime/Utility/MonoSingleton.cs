@@ -1,18 +1,20 @@
 ﻿using UnityEngine;
-
-public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
+namespace Xeon.UniversalUI
 {
-    protected static T instance = null;
-    public static T Instance => instance;
-
-    protected bool isDestroyed = false;
-    protected virtual void Awake()
+    public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
     {
-        if (instance == null) instance = GetComponent<T>();
-        else if (instance != this)
+        protected static T instance = null;
+        public static T Instance => instance;
+
+        protected bool isDestroyed = false;
+        protected virtual void Awake()
         {
-            isDestroyed = true;
-            Destroy(gameObject);
+            if (instance == null) instance = GetComponent<T>();
+            else if (instance != this)
+            {
+                isDestroyed = true;
+                Destroy(gameObject);
+            }
         }
     }
 }
