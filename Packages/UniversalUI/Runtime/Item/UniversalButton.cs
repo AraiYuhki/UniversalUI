@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using Xeon.XTween;
 
 namespace Xeon.UniversalUI
 {
@@ -12,8 +13,8 @@ namespace Xeon.UniversalUI
         protected Button button;
         [SerializeField]
         protected TMP_Text label;
-        [SerializeField]
-        protected bool enableSubmitSE = true;
+
+        private bool enable = true;
 
         public override void AddSubmitEvent(UnityAction action)
         {
@@ -41,19 +42,48 @@ namespace Xeon.UniversalUI
 
         protected override void OnEnable()
         {
-            targetImage.color = isSelected ? selectedColor : normalColor;
+            var color = isSelected ? selectedColor : normalColor;
+            if (!enable)
+                color *= button.colors.disabledColor;
+            targetImage.color = color;
+        }
+
+        protected override void ChangeColor()
+        {
+            if (tween != null)
+            {
+                tween?.Kill();
+                tween = null;
+            }
+            var destinationColor = isSelected ? selectedColor : normalColor;
+            if (!enable)
+                destinationColor *= button.colors.disabledColor;
+            tween = targetImage.TweenColor(destinationColor, fadeDuration).OnComplete(() => tween = null);
+            tween.SetUseUnscaledTime(true);
         }
 
         public override void Initialize(Action onSelect = null, Action onSubmit = null)
         {
-            button.onClick.AddListener(() => onSubmit?.Invoke());
+            button.onClick.AddListener(() =>
+            {
+                onSubmit?.Invoke();
+            });
             base.Initialize(onSelect);
         }
 
         public override void Submit()
         {
-            if (!button.interactable) return;
+            if (!button.interactable)
+                return;
             button.onClick?.Invoke();
+        }
+
+        public void Disable()
+        {
+            enable = false;
+            var color = isSelected ? selectedColor : normalColor;
+            color *= button.colors.disabledColor;
+            targetImage.color = color;
         }
     }
 }

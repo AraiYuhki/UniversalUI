@@ -9,7 +9,7 @@ namespace Xeon.UniversalUI
 
     public interface IItemAddable<TItem> where TItem : UniversalItemBase
     {
-        void AddItem(TItem item);
+        void AddItem(TItem item, bool changeParent);
     }
 
     public interface IItemRemovable<TItem> where TItem : UniversalItemBase

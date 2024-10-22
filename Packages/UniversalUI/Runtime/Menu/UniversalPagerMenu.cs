@@ -54,10 +54,11 @@ namespace Xeon.UniversalUI
             items[selectedIndex].Select();
         }
 
-        public void AddItem(TItem item)
+        public void AddItem(TItem item, bool changeParent = true)
         {
             items.Add(item);
-            item.transform.SetParent(container, false);
+            if (changeParent)
+                item.transform.SetParent(container, false);
             item.transform.localScale = Vector3.one;
         }
 

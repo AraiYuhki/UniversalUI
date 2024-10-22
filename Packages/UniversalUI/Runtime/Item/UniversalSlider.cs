@@ -1,6 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Xeon.UniversalUI
@@ -23,6 +24,12 @@ namespace Xeon.UniversalUI
         private bool isValueChanging = false;
 
         public Action<float> OnValueChanged { get; set; }
+        public UnityAction OnSubmit
+        {
+            get => onSubmit;
+            set => onSubmit = value;
+        }
+
         public float Value
         {
             get => slider.value;

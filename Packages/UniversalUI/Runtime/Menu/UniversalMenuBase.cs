@@ -27,9 +27,11 @@ namespace Xeon.UniversalUI
         public List<UniversalItemBase> SelectableItems => selectableItems;
 
         public virtual int SelectedIndex { get; protected set; }
+        public UniversalItemBase SelectedItem => selectableItems[SelectedIndex];
 
         protected Action onSubmit;
         protected Action onCancel;
+        protected Action<UniversalItemBase> onValueChanged;
 
         public virtual void Submit()
         {
@@ -43,11 +45,12 @@ namespace Xeon.UniversalUI
             onCancel?.Invoke();
         }
 
-        public void AddItem(UniversalItemBase item)
+        public void AddItem(UniversalItemBase item, bool changeParent = true)
         {
             selectableItems.Add(item);
             allItems.Add(item.gameObject);
-            item.transform.SetParent(container, false);
+            if (changeParent)
+                item.transform.SetParent(container, false);
             item.transform.localScale = Vector3.one;
         }
 
@@ -62,6 +65,11 @@ namespace Xeon.UniversalUI
         public void AddItems(params UniversalItemBase[] items)
         {
             foreach (var item in items) AddItem(item);
+        }
+
+        public void AddItems(bool changeParent, params UniversalItemBase[] items)
+        {
+            foreach (var item in items) AddItem(item, changeParent);
         }
 
         public void AddUnselectableItems(params GameObject[] gameObjects)
@@ -90,9 +98,12 @@ namespace Xeon.UniversalUI
         protected virtual void OnSelected(UniversalItemBase item)
         {
             if (LockInput) return;
+            var previndex = SelectedIndex;
             selectableItems[SelectedIndex].UnSelect();
             SelectedIndex = selectableItems.IndexOf(item);
             selectableItems[SelectedIndex].Select();
+            if (previndex != SelectedIndex)
+                onValueChanged?.Invoke(selectableItems[SelectedIndex]);
         }
 
         protected virtual void OnSubmit()
@@ -129,6 +140,15 @@ namespace Xeon.UniversalUI
             foreach (var item in selectableItems) item.UnSelect();
             selectableItems[SelectedIndex].Select();
         }
+
+        public virtual void Unselect()
+        {
+            foreach (var item in selectableItems) item.UnSelect();
+            SelectedIndex = 0;
+        }
+
+        public void SetOnValueChanged(Action<UniversalItemBase> action)
+            => onValueChanged = action;
 
         public virtual void Right() { }
         public virtual void Left() { }
