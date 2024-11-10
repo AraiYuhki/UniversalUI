@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Xeon.XTween;
 
 namespace Xeon.UniversalUI
 {
     public class UniversalPicker : UniversalItem
     {
+        [SerializeField]
+        private Color disabledColor = new Color(0.35f, 0.35f, 0.35f, 0.5f);
         [SerializeField]
         private TMP_Text selectedLabel;
         [SerializeField]
@@ -30,10 +33,7 @@ namespace Xeon.UniversalUI
             set
             {
                 isInteractable = value;
-                if (rightButton != null)
-                    rightButton.interactable = value;
-                if (leftButton != null)
-                    leftButton.runInEditMode = value;
+                OnChangedEnable();
             }
         }
 
@@ -73,16 +73,32 @@ namespace Xeon.UniversalUI
             OnValueChanged?.Invoke(selectedIndex);
         }
 
+        protected virtual void OnChangedEnable(bool isInstant = false)
+        {
+            if (rightButton != null)
+                rightButton.interactable = isInteractable;
+            if (leftButton != null)
+                leftButton.interactable = isInteractable;
+            if (isInstant)
+            {
+                targetImage.color = isInteractable ? normalColor : disabledColor;
+                return;
+            }
+            if (tween != null)
+            {
+                tween.Kill();
+                tween = null;
+            }
+            tween = targetImage.TweenColor(isInteractable ? normalColor : disabledColor, duration).OnComplete(() => tween = null);
+        }
+
 #if UNITY_EDITOR
         private void OnValidate()
         {
             if (Application.isPlaying) return;
             FixIndex();
             UpdateView();
-            if (leftButton != null)
-                leftButton.interactable = isInteractable;
-            if (rightButton != null)
-                rightButton.interactable = isInteractable;
+            OnChangedEnable(true);
         }
 #endif
     }

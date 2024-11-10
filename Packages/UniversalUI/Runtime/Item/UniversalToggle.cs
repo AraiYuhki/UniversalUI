@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.UI;
+using Xeon.XTween;
 
 namespace Xeon.UniversalUI
 {
@@ -13,7 +14,11 @@ namespace Xeon.UniversalUI
         public override bool Interactable 
         {
             get => toggle.interactable;
-            set => toggle.interactable = value;
+            set
+            {
+                toggle.interactable = value;
+                OnChangedEnable();
+            }
         }
 
         public bool Value
@@ -30,6 +35,23 @@ namespace Xeon.UniversalUI
         {
             Value = !Value;
             base.Submit();
+        }
+
+        private void OnChangedEnable()
+        {
+            if (tween != null)
+            {
+                tween.Kill();
+                tween = null;
+            }
+            var destColor = Interactable ? normalColor : toggle.colors.disabledColor * normalColor;
+            tween = targetImage.TweenColor(destColor, duration).OnComplete(() => tween = null);
+        }
+
+        private void OnValidate()
+        {
+            if (Application.isPlaying) return;
+            OnChangedEnable();
         }
     }
 }

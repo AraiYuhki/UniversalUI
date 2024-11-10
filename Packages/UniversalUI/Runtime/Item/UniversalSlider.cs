@@ -1,17 +1,23 @@
 using System;
 using TMPro;
+using Unity.VisualScripting.YamlDotNet.Core.Tokens;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
+using Xeon.XTween;
 
 namespace Xeon.UniversalUI
 {
     public class UniversalSlider : UniversalItem
     {
         [SerializeField]
+        private Color disabledColor = new Color(0.35f, 0.35f, 0.35f, 0.5f);
+        [SerializeField]
         private TMP_InputField input;
         [SerializeField]
         private Slider slider;
+        [SerializeField]
+        private Button rightButton, leftButton;
         [SerializeField]
         private float minValue = 0f;
         [SerializeField]
@@ -72,6 +78,11 @@ namespace Xeon.UniversalUI
                     slider.interactable = value;
                 if (input != null)
                     input.interactable = value;
+                if (rightButton != null)
+                    rightButton.interactable = value;
+                if (leftButton != null)
+                    leftButton.interactable = value;
+                OnChangedEnable();
             }
         }
 
@@ -109,6 +120,21 @@ namespace Xeon.UniversalUI
 
         public override void Left() => slider.value -= step;
 
+        protected virtual void OnChangedEnable(bool isInstant = false)
+        {
+            if (isInstant)
+            {
+                targetImage.color = isInteractable ? normalColor : disabledColor;
+                return;
+            }
+            if (tween != null)
+            {
+                tween.Kill();
+                tween = null;
+            }
+            tween = targetImage.TweenColor(isInteractable ? normalColor : disabledColor, duration).OnComplete(() => tween = null);
+        }
+
         private void OnValidate()
         {
             if (Application.isPlaying) return;
@@ -117,6 +143,11 @@ namespace Xeon.UniversalUI
                 slider.interactable = isInteractable;
             if (input != null)
                 input.interactable = isInteractable;
+            if (rightButton != null)
+                rightButton.interactable = isInteractable;
+            if (leftButton != null)
+                leftButton.interactable = isInteractable;
+            OnChangedEnable(true);
         }
     }
 }

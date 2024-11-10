@@ -10,9 +10,9 @@ namespace Xeon.UniversalUI
         [SerializeField]
         protected Transform container;
         [SerializeField]
-        protected List<UniversalItemBase> selectableItems = new();
-        [SerializeField]
         protected List<GameObject> allItems = new();
+        [SerializeField]
+        protected List<UniversalItemBase> selectableItems = new();
 
         public bool EnableInput
         {
@@ -29,7 +29,10 @@ namespace Xeon.UniversalUI
                 {
                     enableDictionary.Clear();
                     foreach (var item in selectableItems)
+                    {
                         enableDictionary[item] = item.Interactable;
+                        item.Interactable = false;
+                    }
                 }
                 enableInput = value;
             }
@@ -176,5 +179,18 @@ namespace Xeon.UniversalUI
         public virtual void Left() { }
         public virtual void Up() { }
         public virtual void Down() { }
+
+#if UNITY_EDITOR
+        protected virtual void OnValidate()
+        {
+            if (Application.isPlaying) return;
+            selectableItems.Clear();
+            foreach (var item in AllItems)
+            {
+                if (item.TryGetComponent<UniversalItemBase>(out var selectableItem))
+                    selectableItems.Add(selectableItem);
+            }
+        }
+#endif
     }
 }

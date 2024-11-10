@@ -426,6 +426,7 @@ MonoBehaviour:
   targetImage: {fileID: 8818294719884675032}
   titleLabel: {fileID: 943249756570231850}
   duration: 0.2
+  disabledColor: {r: 0.34509805, g: 0.34509805, b: 0.34509805, a: 0.5}
   selectedLabel: {fileID: 3614419160357168932}
   selectedIndex: 1
   rightButton: {fileID: 7242250041870095295}
@@ -434,6 +435,7 @@ MonoBehaviour:
   - One
   - Two
   - Three
+  isInteractable: 1
 --- !u!1001 &3139873469829577665
 PrefabInstance:
   m_ObjectHideFlags: 0
