@@ -656,6 +656,7 @@ MonoBehaviour:
   maxValue: 100
   step: 1
   isInterger: 1
+  isInteractable: 1
 --- !u!1 &4671015126253609816
 GameObject:
   m_ObjectHideFlags: 0

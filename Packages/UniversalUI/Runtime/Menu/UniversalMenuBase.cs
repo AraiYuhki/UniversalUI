@@ -14,7 +14,26 @@ namespace Xeon.UniversalUI
         [SerializeField]
         protected List<GameObject> allItems = new();
 
-        public bool EnableInput { get; set; }
+        public bool EnableInput
+        {
+            get => enableInput;
+            set
+            {
+                if (enableInput == value) return;
+                if (value)
+                {
+                    foreach (var (item, enable) in enableDictionary)
+                        item.Interactable = enable;
+                }
+                else
+                {
+                    enableDictionary.Clear();
+                    foreach (var item in selectableItems)
+                        enableDictionary[item] = item.Interactable;
+                }
+                enableInput = value;
+            }
+        }
         public bool LockInput
         {
             get
@@ -28,6 +47,9 @@ namespace Xeon.UniversalUI
 
         public virtual int SelectedIndex { get; protected set; }
         public UniversalItemBase SelectedItem => selectableItems[SelectedIndex];
+
+        private bool enableInput = false;
+        private Dictionary<UniversalItemBase, bool> enableDictionary = new();
 
         protected Action onSubmit;
         protected Action onCancel;

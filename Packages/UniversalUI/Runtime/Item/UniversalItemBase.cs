@@ -27,6 +27,15 @@ namespace Xeon.UniversalUI
         public abstract void AddSubmitEvent(UnityAction action);
         public abstract void RemoveSubmitEvent(UnityAction action);
 
+        public virtual bool Interactable
+        {
+            get => true;
+            set
+            {
+
+            }
+        }
+
         public virtual void Select()
         {
             if (this.isSelected) return;

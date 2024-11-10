@@ -20,6 +20,8 @@ namespace Xeon.UniversalUI
         private float step = 1f;
         [SerializeField]
         private bool isInterger = true;
+        [SerializeField]
+        private bool isInteractable = true;
 
         private bool isValueChanging = false;
 
@@ -60,6 +62,19 @@ namespace Xeon.UniversalUI
 
         public int IntValue => Mathf.FloorToInt(slider.value);
 
+        public override bool Interactable 
+        {
+            get => isInteractable;
+            set 
+            {
+                isInteractable = value;
+                if (slider != null)
+                    slider.interactable = value;
+                if (input != null)
+                    input.interactable = value;
+            }
+        }
+
         private void Awake()
         {
             slider.minValue = minValue;
@@ -93,5 +108,15 @@ namespace Xeon.UniversalUI
         public override void Right() => slider.value += step;
 
         public override void Left() => slider.value -= step;
+
+        private void OnValidate()
+        {
+            if (Application.isPlaying) return;
+
+            if (slider != null)
+                slider.interactable = isInteractable;
+            if (input != null)
+                input.interactable = isInteractable;
+        }
     }
 }

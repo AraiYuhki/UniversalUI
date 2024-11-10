@@ -10,6 +10,12 @@ namespace Xeon.UniversalUI
         private Toggle toggle;
 
         public Action<bool> OnValueChanged { get; set; }
+        public override bool Interactable 
+        {
+            get => toggle.interactable;
+            set => toggle.interactable = value;
+        }
+
         public bool Value
         {
             get => toggle.isOn;

@@ -13,11 +13,31 @@ namespace Xeon.UniversalUI
         [SerializeField]
         private int selectedIndex = 0;
         [SerializeField]
+        private Button rightButton, leftButton;
+
+        [SerializeField]
         private List<string> values = new List<string>();
+        [SerializeField]
+        private bool isInteractable = true;
 
         public Action<int> OnValueChanged { get; set; }
 
         public int SelectedIndex => selectedIndex;
+
+        public override bool Interactable
+        {
+            get => isInteractable;
+            set
+            {
+                isInteractable = value;
+                if (rightButton != null)
+                    rightButton.interactable = value;
+                if (leftButton != null)
+                    leftButton.runInEditMode = value;
+            }
+        }
+
+
         public void SetItems(List<string> values)
         {
             this.values = values;
@@ -59,6 +79,10 @@ namespace Xeon.UniversalUI
             if (Application.isPlaying) return;
             FixIndex();
             UpdateView();
+            if (leftButton != null)
+                leftButton.interactable = isInteractable;
+            if (rightButton != null)
+                rightButton.interactable = isInteractable;
         }
 #endif
     }

@@ -39,6 +39,12 @@ namespace Xeon.UniversalUI
             }
         }
 
+        public override bool Interactable 
+        {
+            get => input.interactable;
+            set => input.interactable = value;
+        }
+
         private void Awake()
         {
             input.onValueChanged.RemoveListener(OnInputValueChanged);

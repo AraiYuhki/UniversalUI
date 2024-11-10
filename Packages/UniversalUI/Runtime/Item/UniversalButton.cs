@@ -28,7 +28,7 @@ namespace Xeon.UniversalUI
         }
 
         protected override float fadeDuration => button.colors.fadeDuration;
-        public bool Interactable
+        public override bool Interactable
         {
             get => button.interactable;
             set => button.interactable = value;
